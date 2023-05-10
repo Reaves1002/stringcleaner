@@ -107,3 +107,60 @@ green&white;,;09/15/17,   Gail Phelps   ;,;$30.52
 
 #------------------------------------------------
 # Start coding below!
+
+
+daily_sales_replaced = daily_sales.replace(";,;", ";")
+
+
+daily_transactions = daily_sales_replaced.split(",")
+daily_transactions_split = []
+
+
+for i in daily_transactions:
+    daily_transactions_split.append(i.split(";"))
+    
+transaction_clean = []
+
+for i in daily_transactions_split:
+    for k in i:
+        transaction_clean.append(k.strip())
+
+customers = []
+sales = []
+thread_sold = []
+
+for i in range(0, len(transaction_clean)-2, 4):
+    customers.append(transaction_clean[i])
+    sales.append(transaction_clean[i+1])
+    thread_sold.append(transaction_clean[i+2])
+    
+total_sales = 0
+
+for i in sales:
+    temp = i.strip("$")
+    total_sales += float(temp)
+
+thread_sold_split = []
+
+for i in thread_sold:
+    if "&" not in i:
+        thread_sold_split.append(i)
+    else:
+        temp_thread_split = i.split("&")
+        for k in temp_thread_split:
+            thread_sold_split.append(k)
+
+def color_count(color):
+    return thread_sold_split.count(color)
+
+print(color_count("red"))
+
+colors = ["red", "yellow", "green", "white", "black", "blue", "purple"]
+
+print("Today you have sold: ", end = "")
+for i, color in enumerate(colors):
+    if i < len(colors)-1:
+        print(f"{color_count(color)} {color} threads, ", end = "")
+    else:
+        print(f"{color_count(color)} {color} threads.", end = "")
+    
